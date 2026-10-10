@@ -18,6 +18,11 @@ scan() {
         if [ -f $file ]
         then
             n=$(basename $file)
+            # skip files that were restored before (whitelist
+            if [ -f whitelist.txt ] && grep -x -F "$n" whitelist.txt > /dev/null
+            then
+                continue
+            fi
             bad=0
 
             if echo $n | grep -E "\.(exe|bat|vbs|scr|ps1)$" > /dev/null
